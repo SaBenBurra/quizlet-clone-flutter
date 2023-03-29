@@ -22,12 +22,11 @@ class CardsetEditPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _fetchData();
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        cardsetEditPageController.definitionControllers.add(TextEditingController());
-        cardsetEditPageController.termControllers.add(TextEditingController());
-        cardsetEditPageController.cardInputs.add({"":""});
-        
-      }),
+      floatingActionButton: Column(mainAxisSize: MainAxisSize.min, children: [
+        buildSaveButton(),
+        SizedBox(height: screenSize.height * .03),
+        buildAddButton(),
+      ]),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: ColorConstants.darkBackgroundColor,
@@ -41,12 +40,6 @@ class CardsetEditPage extends StatelessWidget {
               child: Obx(() => ListView.builder(
                   itemCount: cardsetEditPageController.cardInputs.length,
                   itemBuilder: (context, index) {
-                    // String definition = cardsetEditPageController
-                    //     .cardInputs[index].keys
-                    //     .toList()[0];
-                    // String term = cardsetEditPageController
-                    //     .cardInputs[index].values
-                    //     .toList()[0];
                     return buildCardEditField(
                         cardsetEditPageController.definitionControllers[index],
                         cardsetEditPageController.termControllers[index]);
@@ -55,6 +48,22 @@ class CardsetEditPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  FloatingActionButton buildAddButton() {
+    return FloatingActionButton(
+      onPressed: cardsetEditPageController.addNewInputField,
+      backgroundColor: Colors.grey,
+      child: Icon(Icons.add, color: Colors.black),
+    );
+  }
+
+  FloatingActionButton buildSaveButton() {
+    return FloatingActionButton(
+      onPressed: cardsetEditPageController.saveCardset,
+      backgroundColor: Colors.grey,
+      child: Icon(Icons.save, color: Colors.black),
     );
   }
 
@@ -74,14 +83,25 @@ class CardsetEditPage extends StatelessWidget {
                   vertical: screenSize.height * .03,
                   horizontal: screenSize.width * .05),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
-                buildCustomTextFormField(controller: definitionController),
+                buildCustomTextFormField(
+                    controller: definitionController,
+                    validator: textFormFieldValidate),
                 SizedBox(
                   height: screenSize.height * .02,
                 ),
-                buildCustomTextFormField(controller: termController),
+                buildCustomTextFormField(
+                    controller: termController,
+                    validator: textFormFieldValidate),
               ]),
             ),
           ],
         ));
+  }
+
+  String? textFormFieldValidate(value) {
+    if (value?.isEmpty ?? true) {
+      return "This field can't be empty";
+    }
+    return null;
   }
 }
