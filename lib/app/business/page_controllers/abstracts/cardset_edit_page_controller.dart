@@ -9,4 +9,6 @@ abstract class ICardsetEditPageController {
   void onInit();
   List<Map<String, String>> cardInputs = <Map<String, String>>[].obs;
   void setCardInputs(Cardset cardset);
+  void addNewInputField();
+  void saveCardset();
 }
