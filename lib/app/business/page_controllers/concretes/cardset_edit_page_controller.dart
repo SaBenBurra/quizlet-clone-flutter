@@ -18,8 +18,12 @@ class CardsetEditPageGetxController extends GetxController
   @override
   List<TextEditingController> termControllers = [];
 
+  @override
+  TextEditingController cardsetNameInputController = TextEditingController();
+  
+
   ICardsetManager cardsetManager = Get.find();
-  late final Cardset cardset;
+  late Cardset cardset;
 
   @override
   void init(Cardset cardset) {
@@ -30,6 +34,7 @@ class CardsetEditPageGetxController extends GetxController
       termControllers
           .add(TextEditingController(text: cardData.values.toList()[0]));
     }
+    cardsetNameInputController.text = cardset.name;
   }
 
   @override
@@ -53,7 +58,13 @@ class CardsetEditPageGetxController extends GetxController
 
   @override
   void saveCardset() {
+    formKey.currentState!.save();
     List<Map<String, String>> cardsData = <Map<String, String>>[];
+
+    if(cardsetNameInputController.text.isEmpty) {
+      Get.snackbar("Validation error", "Cardset name can't be empty", backgroundColor: Colors.red);
+      return;
+    }
     for (int index = 0; index < cardInputs.length; index++) {
       String definition = definitionControllers[index].text.trim();
       String term = termControllers[index].text.trim();
@@ -66,6 +77,8 @@ class CardsetEditPageGetxController extends GetxController
       if (definition.isEmpty && term.isEmpty) continue;
       cardsData.add({"definition": definition, "term": term});
     }
-    cardsetManager.updateCardset(cardset.id, cardset.name, cardsData);
+    cardsetManager.updateCardset(cardset.id, cardsetNameInputController.text, cardsData);
+    Get.snackbar("Success!", "Saved successfully.", backgroundColor: Colors.green);
   }
+
 }

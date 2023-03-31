@@ -35,6 +35,10 @@ class CardsetEditPage extends StatelessWidget {
       backgroundColor: ColorConstants.darkBackgroundColor,
       body: Column(
         children: [
+          Padding(
+            padding: EdgeInsets.all(screenSize.width * .05),
+            child: buildCustomTextFormField(controller: cardsetEditPageController.cardsetNameInputController, fontSize: screenSize.width * .06),
+          ),
           Expanded(
             child: Form(
               key: cardsetEditPageController.formKey,
@@ -56,7 +60,7 @@ class CardsetEditPage extends StatelessWidget {
     return FloatingActionButton(
       onPressed: cardsetEditPageController.addNewInputField,
       backgroundColor: Colors.grey,
-      child: Icon(Icons.add, color: Colors.black),
+      child: const Icon(Icons.add, color: Colors.black),
     );
   }
 
@@ -64,7 +68,7 @@ class CardsetEditPage extends StatelessWidget {
     return FloatingActionButton(
       onPressed: cardsetEditPageController.saveCardset,
       backgroundColor: Colors.grey,
-      child: Icon(Icons.save, color: Colors.black),
+      child: const Icon(Icons.save, color: Colors.black),
     );
   }
 
@@ -85,24 +89,17 @@ class CardsetEditPage extends StatelessWidget {
                   horizontal: screenSize.width * .05),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 buildCustomTextFormField(
-                    controller: definitionController,
-                    validator: textFormFieldValidate),
+                  controller: definitionController,
+                ),
                 SizedBox(
                   height: screenSize.height * .02,
                 ),
                 buildCustomTextFormField(
-                    controller: termController,
-                    validator: textFormFieldValidate),
+                  controller: termController,
+                ),
               ]),
             ),
           ],
         ));
-  }
-
-  String? textFormFieldValidate(value) {
-    if (value?.isEmpty ?? true) {
-      return "This field can't be empty";
-    }
-    return null;
   }
 }
