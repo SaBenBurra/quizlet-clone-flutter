@@ -15,7 +15,8 @@ import 'package:quizlet_app/app/data/services/concretes/cardset_manager.dart';
 class Bindings {
   static void bindAll() {
     _bindApiProviders();
-    _bindControllers();
+    _bindEntityManagers();
+    _bindPageControllers();
   }
 
   static void _bindApiProviders() {
@@ -26,16 +27,20 @@ class Bindings {
     Get.put(cardApiProvider);
   }
 
-  static void _bindControllers() {
+  static void _bindEntityManagers() {
     ICardsetManager cardsetManager = CardsetGetxManager();
     ICardManager cardManager = CardGetxManager();
-    ICardsetDetailPageController cardsetDetailPageController =
-        CardsetDetailPageController();
-    ICardsetEditPageController cardsetEditPageController =
-        CardsetEditPageController();
 
     Get.put(cardsetManager);
     Get.put(cardManager);
+  }
+
+  static void _bindPageControllers() {
+    ICardsetDetailPageController cardsetDetailPageController =
+        CardsetDetailPageGetxController();
+    ICardsetEditPageController cardsetEditPageController =
+        CardsetEditPageGetxController();
+
     Get.put(cardsetDetailPageController);
     Get.put(cardsetEditPageController);
   }
