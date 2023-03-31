@@ -27,4 +27,15 @@ class CardsetGetxManager extends GetxController implements ICardsetManager {
 
     cardsets.assignAll(fetchedCardsets);
   }
+
+  @override
+  void updateCardset(
+      int cardId, String cardsetName, List<Map<String, String>> cardsData) async {
+    try {
+      Response response =
+          await cardsetApiProvider.update(cardId, cardsetName, cardsData);
+    } on DioError catch (e) {
+      print(e.response!.data.toString());
+    }
+  }
 }
