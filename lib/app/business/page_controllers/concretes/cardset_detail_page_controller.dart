@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_detail_page_controller.dart';
 import 'package:quizlet_app/app/data/models/cardset.dart';
 
-class CardsetDetailPageController extends GetxController
+class CardsetDetailPageGetxController extends GetxController
     implements ICardsetDetailPageController {
   @override
   late Rx<Cardset> currentlyShowingCardset;

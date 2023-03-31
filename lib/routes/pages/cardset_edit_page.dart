@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Card;
 import 'package:get/get.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_edit_page_controller.dart';
+import 'package:quizlet_app/app/business/page_controllers/concretes/cardset_edit_page_controller.dart';
 import 'package:quizlet_app/app/constants/color_constants.dart';
 import 'package:quizlet_app/app/data/models/cardset.dart';
 import 'package:quizlet_app/utils/screen_size.dart';
@@ -10,12 +11,12 @@ class CardsetEditPage extends StatelessWidget {
   CardsetEditPage({super.key, required this.cardset});
 
   Cardset cardset;
-
-  ICardsetEditPageController cardsetEditPageController = Get.find();
+  ICardsetEditPageController cardsetEditPageController =
+      Get.put(CardsetEditPageGetxController(), tag: UniqueKey().toString());
   final ScreenSize screenSize = Get.find();
   void _fetchData() {
     cardsetEditPageController.setCardInputs(cardset);
-    cardsetEditPageController.onInit();
+    cardsetEditPageController.init(cardset);
   }
 
   @override
