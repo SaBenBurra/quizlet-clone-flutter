@@ -5,7 +5,8 @@ abstract class ICardsetDetailPageController {
   late Rx<Cardset> cardset;
   Rx<int> cardIndex = 0.obs;
   int? cardsetIndex;
-  void init(int? cardsetIndex, Cardset cardset);
+  int? tabId;
+  void init({int? cardsetIndex, required Cardset cardset, int? tabId});
   void increaseCardIndex();
   void decreaseCardIndex();
   void removeButtonAction(); 

@@ -16,6 +16,8 @@ class CardsetDetailPageGetxController extends GetxController
   @override
   int? cardsetIndex;
 
+  int? tabId;
+
   ICardsetManager cardsetManager = Get.find();
 
   ICardsetListPageController cardsetListPageController =
@@ -28,9 +30,10 @@ class CardsetDetailPageGetxController extends GetxController
   }
 
   @override
-  void init(int? cardsetIndex, Cardset cardset) {
+  void init({int? cardsetIndex, required Cardset cardset, int? tabId}) {
     this.cardset = cardset.obs;
     this.cardsetIndex = cardsetIndex;
+    this.tabId = tabId;
     ever(this.cardset, (callback) {
       updateCardset();
     });
@@ -67,8 +70,17 @@ class CardsetDetailPageGetxController extends GetxController
         ));
   }
 
-  void removeCardset() {
-    cardsetManager.removeCardset(cardset.value.id);
-    if(cardsetIndex != null) cardsetListPageController.cardsets.removeAt(cardsetIndex!);
+  void removeCardset() async {
+    bool success = await cardsetManager.removeCardset(cardset.value.id);
+    if (!success) {
+      Get.snackbar("Server Error", "Can't removed", backgroundColor: Colors.red);
+      return;
+    }
+    if (cardsetIndex != null) {
+      cardsetListPageController.cardsets.removeAt(cardsetIndex!);
+    }
+    Get.back();
+    Get.back(id: tabId);
+    Get.snackbar("Success!", "Successfully removed.", backgroundColor: Colors.green);
   }
 }

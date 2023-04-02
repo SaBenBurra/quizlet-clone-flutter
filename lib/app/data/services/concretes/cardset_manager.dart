@@ -50,4 +50,14 @@ class CardsetGetxManager extends GetxController implements ICardsetManager {
       return false;
     }
   }
+
+  @override
+  Future<bool> create(String cardsetName) async {
+    try {
+      Response response = await cardsetApiProvider.create(cardsetName);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

@@ -31,7 +31,7 @@ class CardsetDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    pageController.init(cardsetIndex, cardset);
+    pageController.init(cardsetIndex: cardsetIndex, cardset: cardset, tabId: tabId);
 
     return SafeArea(
       child: Scaffold(

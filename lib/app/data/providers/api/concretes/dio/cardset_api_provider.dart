@@ -24,4 +24,10 @@ class CardsetDioApiProvider implements ICardsetApiProvider {
     return response;
   }
 
+  @override
+  Future<Response> create(String cardsetName) {
+    Future<Response> response = BaseDioApiProvider.dio.post("/cardsets", data: {"name": cardsetName});
+    return response;
+  }
+
 }

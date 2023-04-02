@@ -21,6 +21,7 @@ class CardsetListPage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: buildCreateCardsetButton(),
         backgroundColor: ColorConstants.darkBackgroundColor,
         body: Padding(
             padding: EdgeInsets.symmetric(
@@ -39,6 +40,8 @@ class CardsetListPage extends StatelessWidget {
       ),
     );
   }
+
+  FloatingActionButton buildCreateCardsetButton() => FloatingActionButton(backgroundColor: Colors.grey, child: Icon(Icons.add, color: Colors.black), onPressed: pageController.createButtonAction);
 
   Widget buildCardsetList() {
     return Obx(() {
