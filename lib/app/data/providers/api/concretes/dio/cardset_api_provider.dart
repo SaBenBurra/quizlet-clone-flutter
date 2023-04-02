@@ -17,4 +17,11 @@ class CardsetDioApiProvider implements ICardsetApiProvider {
         data: {"name": cardsetName, "cards": cardsData});
     return response;
   }
+
+  @override
+  Future<Response> remove(int id) {
+    Future<Response> response = BaseDioApiProvider.dio.delete("/cardsets/$id");
+    return response;
+  }
+
 }

@@ -38,15 +38,17 @@ class Bindings {
   }
 
   static void _bindPageControllers() {
-    ICardsetDetailPageController cardsetDetailPageController =
-        CardsetDetailPageGetxController();
     ICardsetEditPageController cardsetEditPageController =
         CardsetEditPageGetxController();
     ICardsetListPageController cardsetListPageController =
         CardsetListPageGetxController();
 
+    Get.put(cardsetListPageController);
+
+    ICardsetDetailPageController cardsetDetailPageController =
+        CardsetDetailPageGetxController();
+
     Get.put(cardsetDetailPageController);
     Get.put(cardsetEditPageController);
-    Get.put(cardsetListPageController);
   }
 }

@@ -8,4 +8,6 @@ abstract class ICardsetDetailPageController {
   void init(int? cardsetIndex, Cardset cardset);
   void increaseCardIndex();
   void decreaseCardIndex();
+  void removeButtonAction(); 
+  void editButtonAction();
 }

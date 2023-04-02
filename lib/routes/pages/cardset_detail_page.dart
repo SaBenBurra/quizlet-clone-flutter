@@ -13,7 +13,11 @@ import 'package:quizlet_app/widgets/custom_button1.dart';
 import 'package:quizlet_app/widgets/custom_flip_card.dart';
 
 class CardsetDetailPage extends StatelessWidget {
-  CardsetDetailPage({super.key, required this.tabId, required this.cardset, this.cardsetIndex});
+  CardsetDetailPage(
+      {super.key,
+      required this.tabId,
+      required this.cardset,
+      this.cardsetIndex});
 
   final ICardsetDetailPageController pageController =
       Get.put(CardsetDetailPageGetxController(), tag: UniqueKey().toString());
@@ -28,12 +32,14 @@ class CardsetDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     pageController.init(cardsetIndex, cardset);
-    
+
     return SafeArea(
       child: Scaffold(
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            buildRemoveButton(),
+            SizedBox(height: screenSize.height * .02),
             buildEditButton(),
             SizedBox(height: screenSize.height * .05)
           ],
@@ -65,10 +71,7 @@ class CardsetDetailPage extends StatelessWidget {
       height: screenSize.width * .13,
       child: FittedBox(
         child: FloatingActionButton(
-          onPressed: () {
-            Get.to(CardsetEditPage(
-                cardset: cardset, cardsetDetailPageController: pageController));
-          },
+          onPressed: pageController.editButtonAction,
           backgroundColor: ColorConstants.darkSixthAppColor,
           child: Icon(Icons.edit,
               size: screenSize.width * .07,
@@ -115,6 +118,23 @@ class CardsetDetailPage extends StatelessWidget {
               .textTheme
               .headlineSmall!
               .copyWith(color: ColorConstants.darkFourthAppColor),
+        ),
+      ),
+    );
+  }
+
+  Widget buildRemoveButton() {
+    return SizedBox(
+      width: screenSize.width * .13,
+      height: screenSize.width * .13,
+      child: FittedBox(
+        child: FloatingActionButton(
+          heroTag: "removeButton",
+          onPressed: pageController.removeButtonAction,
+          backgroundColor: Colors.red,
+          child: Icon(Icons.delete,
+              size: screenSize.width * .07,
+              color: ColorConstants.darkFifthAppColor),
         ),
       ),
     );

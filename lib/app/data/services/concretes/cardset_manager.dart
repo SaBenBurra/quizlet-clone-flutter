@@ -37,6 +37,16 @@ class CardsetGetxManager extends GetxController implements ICardsetManager {
       return true;
     } on DioError catch (e) {
       print(e.response!.data.toString());
+    }
+    return false;
+  }
+
+  @override
+  Future<bool> removeCardset(int cardsetId) async {
+    try {
+      Response response = await cardsetApiProvider.remove(cardsetId);
+      return true;
+    } catch (e) {
       return false;
     }
   }

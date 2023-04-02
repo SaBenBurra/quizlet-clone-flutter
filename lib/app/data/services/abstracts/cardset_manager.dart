@@ -5,5 +5,6 @@ abstract class ICardsetManager {
   Map<int, Cardset> cardsets = <int, Cardset>{}; 
   Rx<Cardset>? currentlyShowingCardset;
   Future<void> getAll();   
-  Future<bool> updateCardset(int cardId, String cardsetName, List<Map<String, String>> cards);
+  Future<bool> updateCardset(int cardsetId, String cardsetName, List<Map<String, String>> cards);
+  Future<bool> removeCardset(int cardsetId);
 }
