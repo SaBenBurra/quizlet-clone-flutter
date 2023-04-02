@@ -48,7 +48,7 @@ class CardsetListItem extends StatelessWidget {
             SizedBox(
               height: screenSize.width * .03,
             ),
-            Text("${cardset.cardCount.toString()} kart içeriyor",
+            Text("contains ${cardset.cardCount.toString()} card",
                 style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
