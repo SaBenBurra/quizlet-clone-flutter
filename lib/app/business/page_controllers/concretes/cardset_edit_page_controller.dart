@@ -105,6 +105,7 @@ class CardsetEditPageGetxController extends GetxController
     _updateCardset(cardsetName, cardsData);
     if (cardsetDetailPageController != null) {
       cardsetDetailPageController!.cardset.value = cardset;
+      cardsetDetailPageController!.cardset.refresh();
     }
   }
 }
