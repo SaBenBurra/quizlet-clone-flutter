@@ -80,7 +80,7 @@ class CardsetEditPageGetxController extends GetxController
           Card(definition: cardData["definition"]!, term: cardData["term"]!);
       cards.add(card);
     }
-    cardset.cards = cards;
+    cardset.updateCards(cards);
   }
 
   @override
@@ -117,7 +117,6 @@ class CardsetEditPageGetxController extends GetxController
       cardsetDetailPageController!.cardset.refresh();
     }
     if(cardsetListPageController != null && cardsetIndex != null) {
-      print("İFE GİRDİ");
       cardsetListPageController!.cardsets[cardsetIndex!] = cardset;
     }
   }
