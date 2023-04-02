@@ -108,4 +108,12 @@ class CardsetEditPageGetxController extends GetxController
       cardsetDetailPageController!.cardset.refresh();
     }
   }
+
+  @override
+  void removeInputField(int index) {
+    cardInputs.removeAt(index);
+    definitionControllers.removeAt(index);
+    termControllers.removeAt(index);
+  }
+  
 }

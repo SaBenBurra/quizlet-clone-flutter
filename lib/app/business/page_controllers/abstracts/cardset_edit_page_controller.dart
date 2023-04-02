@@ -13,4 +13,5 @@ abstract class ICardsetEditPageController {
   void setCardInputs(Cardset cardset);
   void addNewInputField();
   void saveCardset();
+  void removeInputField(int index);
 }

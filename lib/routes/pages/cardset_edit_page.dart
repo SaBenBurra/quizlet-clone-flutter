@@ -54,7 +54,7 @@ class CardsetEditPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return buildCardEditField(
                         cardsetEditPageController.definitionControllers[index],
-                        cardsetEditPageController.termControllers[index]);
+                        cardsetEditPageController.termControllers[index], index);
                   })),
             ),
           ),
@@ -82,31 +82,44 @@ class CardsetEditPage extends StatelessWidget {
   }
 
   Widget buildCardEditField(TextEditingController definitionController,
-      TextEditingController termController) {
+      TextEditingController termController, int index) {
     return Container(
         color: ColorConstants.darkSixthAppColor,
         margin: EdgeInsets.symmetric(
             vertical: screenSize.height * .02,
             horizontal: screenSize.width * .05),
         width: screenSize.width * .85,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Stack(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: screenSize.height * .03,
-                  horizontal: screenSize.width * .05),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                buildCustomTextFormField(
-                  controller: definitionController,
-                ),
+            Positioned(
+                child: IconButton(
+              onPressed: () => cardsetEditPageController.removeInputField(index),
+                  icon: Icon(Icons.close, size: screenSize.width * .05),
+                  color: Colors.red,
+                )),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 SizedBox(
-                  height: screenSize.height * .02,
+                  height: screenSize.height * .03,
                 ),
-                buildCustomTextFormField(
-                  controller: termController,
+                Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: screenSize.height * .03,
+                      horizontal: screenSize.width * .05),
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    buildCustomTextFormField(
+                      controller: definitionController,
+                    ),
+                    SizedBox(
+                      height: screenSize.height * .02,
+                    ),
+                    buildCustomTextFormField(
+                      controller: termController,
+                    ),
+                  ]),
                 ),
-              ]),
+              ],
             ),
           ],
         ));
