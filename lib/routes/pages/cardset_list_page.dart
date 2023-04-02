@@ -47,7 +47,7 @@ class CardsetListPage extends StatelessWidget {
           itemCount: cardsets.length,
           itemBuilder: (context, index) {
             Cardset cardset = cardsets[index];
-            return CardsetListItem(cardset: cardset, tabId: 0, index: index);
+            return CardsetListItem(cardset: cardset, tabId: 0, index: index, cardsetListPageController: pageController,);
           });
     });
   }

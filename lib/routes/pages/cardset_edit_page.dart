@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Card;
 import 'package:get/get.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_detail_page_controller.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_edit_page_controller.dart';
+import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_list_page_controller.dart';
 import 'package:quizlet_app/app/business/page_controllers/concretes/cardset_edit_page_controller.dart';
 import 'package:quizlet_app/app/constants/color_constants.dart';
 import 'package:quizlet_app/app/data/models/cardset.dart';
@@ -10,17 +11,25 @@ import 'package:quizlet_app/widgets/custom_text_form_field.dart';
 
 class CardsetEditPage extends StatelessWidget {
   CardsetEditPage(
-      {super.key, required this.cardset, this.cardsetDetailPageController});
+      {super.key,
+      required this.cardset,
+      this.cardsetDetailPageController,
+      this.cardsetListPageController, this.cardsetIndex});
 
   Cardset cardset;
   ICardsetDetailPageController? cardsetDetailPageController;
   ICardsetEditPageController cardsetEditPageController =
       Get.put(CardsetEditPageGetxController(), tag: UniqueKey().toString());
+  ICardsetListPageController? cardsetListPageController;
+  int? cardsetIndex;
+
   final ScreenSize screenSize = Get.find();
 
   void init() {
-    cardsetEditPageController.setCardInputs(cardset);
-    cardsetEditPageController.init(cardset, cardsetDetailPageController);
+    cardsetEditPageController.init(
+        cardset: cardset,
+        cardsetDetailPageController: cardsetDetailPageController,
+        cardsetListPageController: cardsetListPageController, cardsetIndex: cardsetIndex);
   }
 
   @override
@@ -54,7 +63,8 @@ class CardsetEditPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return buildCardEditField(
                         cardsetEditPageController.definitionControllers[index],
-                        cardsetEditPageController.termControllers[index], index);
+                        cardsetEditPageController.termControllers[index],
+                        index);
                   })),
             ),
           ),
@@ -93,10 +103,11 @@ class CardsetEditPage extends StatelessWidget {
           children: [
             Positioned(
                 child: IconButton(
-              onPressed: () => cardsetEditPageController.removeInputField(index),
-                  icon: Icon(Icons.close, size: screenSize.width * .05),
-                  color: Colors.red,
-                )),
+              onPressed: () =>
+                  cardsetEditPageController.removeInputField(index),
+              icon: Icon(Icons.close, size: screenSize.width * .05),
+              color: Colors.red,
+            )),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [

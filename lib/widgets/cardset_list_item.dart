@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_list_page_controller.dart';
 import 'package:quizlet_app/app/constants/color_constants.dart';
 import 'package:quizlet_app/app/data/models/cardset.dart';
 import 'package:quizlet_app/routes/pages/cardset_detail_page.dart';
+import 'package:quizlet_app/routes/pages/cardset_edit_page.dart';
 import 'package:quizlet_app/utils/screen_size.dart';
 
 class CardsetListItem extends StatelessWidget {
-  CardsetListItem({super.key, required this.cardset, required this.tabId, this.index});
+  CardsetListItem(
+      {super.key,
+      required this.cardset,
+      required this.tabId,
+      this.index,
+      this.cardsetListPageController});
 
   final Cardset cardset;
   final int tabId;
   final ScreenSize screenSize = Get.find();
   final int? index;
+
+  ICardsetListPageController? cardsetListPageController;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +63,18 @@ class CardsetListItem extends StatelessWidget {
   }
 
   void onTap() {
-    if (cardset.cardCount > 0)
-      Get.to(CardsetDetailPage(tabId: tabId, cardset: cardset, cardsetIndex: index), id: tabId);
+    if (cardset.cardCount > 0) {
+      Get.to(
+          CardsetDetailPage(
+              tabId: tabId, cardset: cardset, cardsetIndex: index),
+          id: tabId);
+    } else {
+      Get.to(
+          CardsetEditPage(
+              cardset: cardset,
+              cardsetListPageController: cardsetListPageController,
+              cardsetIndex: index),
+          id: tabId);
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Card;
 import 'package:get/get.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_detail_page_controller.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_edit_page_controller.dart';
+import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_list_page_controller.dart';
 import 'package:quizlet_app/app/data/models/card.dart';
 import 'package:quizlet_app/app/data/models/cardset.dart';
 import 'package:quizlet_app/app/data/services/abstracts/cardset_manager.dart';
@@ -27,20 +28,19 @@ class CardsetEditPageGetxController extends GetxController
   ICardsetManager cardsetManager = Get.find();
   late Cardset cardset;
   ICardsetDetailPageController? cardsetDetailPageController;
+  ICardsetListPageController? cardsetListPageController;
+  int? cardsetIndex;
 
   @override
-  void init(Cardset cardset,
-      ICardsetDetailPageController? cardsetDetailPageController) {
+  void init({required Cardset cardset,
+      ICardsetDetailPageController? cardsetDetailPageController, ICardsetListPageController? cardsetListPageController, int? cardsetIndex}) {
     this.cardset = cardset;
-    for (var cardData in cardInputs) {
-      definitionControllers
-          .add(TextEditingController(text: cardData.keys.toList()[0]));
-      termControllers
-          .add(TextEditingController(text: cardData.values.toList()[0]));
-    }
+    setCardInputs(cardset);
     cardsetNameInputController.text = cardset.name;
 
     this.cardsetDetailPageController = cardsetDetailPageController;
+    this.cardsetListPageController = cardsetListPageController;
+    this.cardsetIndex = cardsetIndex;
   }
 
   @override
@@ -49,6 +49,16 @@ class CardsetEditPageGetxController extends GetxController
     cardset.cards?.forEach((card) {
       cardInputs.add({card.definition: card.term});
     });
+    if (cardInputs.isEmpty) {
+      cardInputs.add({" ": " "});
+    }
+    for (var cardData in cardInputs) {
+      definitionControllers
+          .add(TextEditingController(text: cardData.keys.toList()[0]));
+      termControllers
+          .add(TextEditingController(text: cardData.values.toList()[0]));
+    }
+
     cardInputs = cardInputs;
   }
 
@@ -75,7 +85,6 @@ class CardsetEditPageGetxController extends GetxController
 
   @override
   void saveCardset() async {
-    formKey.currentState!.save();
     List<Map<String, String>> cardsData = <Map<String, String>>[];
     String cardsetName = cardsetNameInputController.text;
 
@@ -107,13 +116,17 @@ class CardsetEditPageGetxController extends GetxController
       cardsetDetailPageController!.cardset.value = cardset;
       cardsetDetailPageController!.cardset.refresh();
     }
+    if(cardsetListPageController != null && cardsetIndex != null) {
+      print("İFE GİRDİ");
+      cardsetListPageController!.cardsets[cardsetIndex!] = cardset;
+    }
   }
 
   @override
   void removeInputField(int index) {
+    if(cardInputs.length == 1) return;
     cardInputs.removeAt(index);
     definitionControllers.removeAt(index);
     termControllers.removeAt(index);
   }
-  
 }
