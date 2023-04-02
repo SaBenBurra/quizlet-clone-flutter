@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Card;
 import 'package:get/get.dart';
+import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_detail_page_controller.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_edit_page_controller.dart';
 import 'package:quizlet_app/app/business/page_controllers/concretes/cardset_edit_page_controller.dart';
 import 'package:quizlet_app/app/constants/color_constants.dart';
@@ -8,20 +9,23 @@ import 'package:quizlet_app/utils/screen_size.dart';
 import 'package:quizlet_app/widgets/custom_text_form_field.dart';
 
 class CardsetEditPage extends StatelessWidget {
-  CardsetEditPage({super.key, required this.cardset});
+  CardsetEditPage(
+      {super.key, required this.cardset, this.cardsetDetailPageController});
 
   Cardset cardset;
+  ICardsetDetailPageController? cardsetDetailPageController;
   ICardsetEditPageController cardsetEditPageController =
       Get.put(CardsetEditPageGetxController(), tag: UniqueKey().toString());
   final ScreenSize screenSize = Get.find();
-  void _fetchData() {
+
+  void init() {
     cardsetEditPageController.setCardInputs(cardset);
-    cardsetEditPageController.init(cardset);
+    cardsetEditPageController.init(cardset, cardsetDetailPageController);
   }
 
   @override
   Widget build(BuildContext context) {
-    _fetchData();
+    init();
     return Scaffold(
       floatingActionButton: Column(mainAxisSize: MainAxisSize.min, children: [
         buildSaveButton(),
@@ -37,7 +41,10 @@ class CardsetEditPage extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.all(screenSize.width * .05),
-            child: buildCustomTextFormField(controller: cardsetEditPageController.cardsetNameInputController, fontSize: screenSize.width * .06),
+            child: buildCustomTextFormField(
+                controller:
+                    cardsetEditPageController.cardsetNameInputController,
+                fontSize: screenSize.width * .06),
           ),
           Expanded(
             child: Form(
@@ -58,6 +65,7 @@ class CardsetEditPage extends StatelessWidget {
 
   FloatingActionButton buildAddButton() {
     return FloatingActionButton(
+      heroTag: "editButton",
       onPressed: cardsetEditPageController.addNewInputField,
       backgroundColor: Colors.grey,
       child: const Icon(Icons.add, color: Colors.black),
@@ -66,6 +74,7 @@ class CardsetEditPage extends StatelessWidget {
 
   FloatingActionButton buildSaveButton() {
     return FloatingActionButton(
+      heroTag: "saveButton",
       onPressed: cardsetEditPageController.saveCardset,
       backgroundColor: Colors.grey,
       child: const Icon(Icons.save, color: Colors.black),

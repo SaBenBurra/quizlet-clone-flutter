@@ -6,11 +6,12 @@ import 'package:quizlet_app/routes/pages/cardset_detail_page.dart';
 import 'package:quizlet_app/utils/screen_size.dart';
 
 class CardsetListItem extends StatelessWidget {
-  CardsetListItem({super.key, required this.cardset, required this.tabId});
+  CardsetListItem({super.key, required this.cardset, required this.tabId, this.index});
 
   final Cardset cardset;
   final int tabId;
   final ScreenSize screenSize = Get.find();
+  final int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,6 @@ class CardsetListItem extends StatelessWidget {
 
   void onTap() {
     if (cardset.cardCount > 0)
-      Get.to(CardsetDetailPage(tabId: tabId, cardset: cardset), id: tabId);
+      Get.to(CardsetDetailPage(tabId: tabId, cardset: cardset, cardsetIndex: index), id: tabId);
   }
 }

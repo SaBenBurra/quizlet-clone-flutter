@@ -13,7 +13,7 @@ class CardsetGetxManager extends GetxController implements ICardsetManager {
   final ICardsetApiProvider cardsetApiProvider = Get.find();
 
   @override
-  void getAll() async {
+  Future<void> getAll() async {
     Response response = await cardsetApiProvider.getAll();
     var data = response.data["data"];
     Map<int, Cardset> fetchedCardsets = {};
@@ -29,13 +29,15 @@ class CardsetGetxManager extends GetxController implements ICardsetManager {
   }
 
   @override
-  void updateCardset(
-      int cardId, String cardsetName, List<Map<String, String>> cardsData) async {
+  Future<bool> updateCardset(int cardId, String cardsetName,
+      List<Map<String, String>> cardsData) async {
     try {
       Response response =
           await cardsetApiProvider.update(cardId, cardsetName, cardsData);
+      return true;
     } on DioError catch (e) {
       print(e.response!.data.toString());
+      return false;
     }
   }
 }

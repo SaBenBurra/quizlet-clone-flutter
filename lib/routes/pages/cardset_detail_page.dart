@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide BackButton, Card;
 import 'package:get/get.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_detail_page_controller.dart';
+import 'package:quizlet_app/app/business/page_controllers/concretes/cardset_detail_page_controller.dart';
 import 'package:quizlet_app/app/constants/color_constants.dart';
 import 'package:quizlet_app/app/data/models/card.dart';
 import 'package:quizlet_app/app/data/models/cardset.dart';
@@ -12,17 +13,22 @@ import 'package:quizlet_app/widgets/custom_button1.dart';
 import 'package:quizlet_app/widgets/custom_flip_card.dart';
 
 class CardsetDetailPage extends StatelessWidget {
+  CardsetDetailPage({super.key, required this.tabId, required this.cardset, this.cardsetIndex});
+
+  final ICardsetDetailPageController pageController =
+      Get.put(CardsetDetailPageGetxController(), tag: UniqueKey().toString());
+
   int tabId;
   Cardset cardset;
-  CardsetDetailPage({super.key, required this.tabId, required this.cardset});
-
   final ScreenSize screenSize = Get.find();
   final ICardsetManager cardsetManager = Get.find();
   final ICardManager cardManager = Get.find();
-  final ICardsetDetailPageController pageController = Get.find();
+  final int? cardsetIndex;
+
   @override
   Widget build(BuildContext context) {
-    pageController.currentlyShowingCardset = cardset.obs;
+    pageController.init(cardsetIndex, cardset);
+    
     return SafeArea(
       child: Scaffold(
         floatingActionButton: Column(
@@ -41,8 +47,7 @@ class CardsetDetailPage extends StatelessWidget {
                 return const Center(child: CircularProgressIndicator());
               }
               if (snapshot.hasError) return Text(snapshot.error.toString());
-              pageController.currentlyShowingCardset.value.cards =
-                  snapshot.data;
+              pageController.cardset.value.cards = snapshot.data;
               return ListView(children: [
                 SizedBox(height: screenSize.height * .05),
                 buildCard(),
@@ -61,7 +66,8 @@ class CardsetDetailPage extends StatelessWidget {
       child: FittedBox(
         child: FloatingActionButton(
           onPressed: () {
-            Get.to(CardsetEditPage(cardset: cardset), id: tabId);
+            Get.to(CardsetEditPage(
+                cardset: cardset, cardsetDetailPageController: pageController));
           },
           backgroundColor: ColorConstants.darkSixthAppColor,
           child: Icon(Icons.edit,
@@ -75,8 +81,8 @@ class CardsetDetailPage extends StatelessWidget {
   Widget buildCard() {
     return Center(
         child: Obx(() => CustomFlipCard(
-            card: pageController.currentlyShowingCardset.value
-                .cards![pageController.cardIndex.value])));
+            card: pageController
+                .cardset.value.cards![pageController.cardIndex.value])));
   }
 
   Widget buildNextPrevButtons() {
@@ -104,7 +110,7 @@ class CardsetDetailPage extends StatelessWidget {
       backgroundColor: ColorConstants.darkBackgroundColor,
       title: Obx(
         () => Text(
-          pageController.currentlyShowingCardset.value.name,
+          pageController.cardset.value.name,
           style: Theme.of(context)
               .textTheme
               .headlineSmall!

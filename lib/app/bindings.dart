@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_detail_page_controller.dart';
 import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_edit_page_controller.dart';
+import 'package:quizlet_app/app/business/page_controllers/abstracts/cardset_list_page_controller.dart';
 import 'package:quizlet_app/app/business/page_controllers/concretes/cardset_detail_page_controller.dart';
 import 'package:quizlet_app/app/business/page_controllers/concretes/cardset_edit_page_controller.dart';
+import 'package:quizlet_app/app/business/page_controllers/concretes/cardset_list_page_controller.dart';
 import 'package:quizlet_app/app/data/providers/api/abstracts/card_api_provider.dart';
 import 'package:quizlet_app/app/data/providers/api/abstracts/cardset_api_provider.dart';
 import 'package:quizlet_app/app/data/providers/api/concretes/dio/card_api_provider.dart';
@@ -40,8 +42,11 @@ class Bindings {
         CardsetDetailPageGetxController();
     ICardsetEditPageController cardsetEditPageController =
         CardsetEditPageGetxController();
+    ICardsetListPageController cardsetListPageController =
+        CardsetListPageGetxController();
 
     Get.put(cardsetDetailPageController);
     Get.put(cardsetEditPageController);
+    Get.put(cardsetListPageController);
   }
 }
